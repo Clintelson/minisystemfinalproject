@@ -93,14 +93,14 @@ $result = $conn->query($query);
             ?>
         <tr>
             <td><?php echo $count++; ?></td>
-            <td><?php echo $items["firstName"]; ?></td>
-            <td><?php echo $items["middleName"]; ?></td>
-            <td><?php echo $items["lastName"]; ?></td>
+            <td><?php echo $items["FirstName"]; ?></td>
+            <td><?php echo $items["MiddleName"]; ?></td>
+            <td><?php echo $items["LastName"]; ?></td>
             <td><?php echo $items["Age"]; ?></td>
-            <td><?php echo $items["sex"]; ?></td>
-            <td><?php echo $items["birthdate"]; ?></td>
+            <td><?php echo $items["Sex"]; ?></td>
+            <td><?php echo $items["Birthdate"]; ?></td>
             <td><?php echo $items["bloodType"]; ?></td>
-            <td><?php echo $items["religion"]; ?></td>
+            <td><?php echo $items["Religion"]; ?></td>
             <td><?php echo $items["yearLevel"]; ?></td>
             <td><?php echo $items["idNumber"]; ?></td>
             <td><?php echo $items["email"]; ?></td>

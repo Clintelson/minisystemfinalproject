@@ -15,7 +15,7 @@ if (isset($_POST['send'])) {
     $id_number = $_POST['ID'];
     $email = $_POST['Email'];
 
-    $stmt = $conn->prepare("INSERT INTO information (firstName, middleName, lastName, Age, sex, birthdate, bloodType, religion,yearLevel, idNumber, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO information (FirstName, MiddleName, LastName, Age, Sex, Birthdate, bloodType, Religion,yearLevel, idNumber, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     $stmt->bind_param("sssissssiss", $first, $middle, $last, $age, $sex, $birthdate, $blood_type, $religion, $year_level, $id_number, $email);
 
