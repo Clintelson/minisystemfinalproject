@@ -49,7 +49,7 @@ $result = $conn->query($query);
     </style>
 </head>
 
-<body class="w-screen h-dvh bg-gray-400 p-10 font-mono flex flex-col gap-5">
+<body class="w-screen h-dvh bg-gray-400 p-10 font-mono flex flex-col gap-5 overflow-x-hidden">
 
     <div class="w-full flex flex-row justify-between items-center relative">
 

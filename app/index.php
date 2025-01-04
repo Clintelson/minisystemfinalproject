@@ -10,8 +10,8 @@ if (isset($_POST['send'])) {
     $sex = $_POST['Sex'] ?? null;
     $birthdate = $_POST['Birth'];
     $blood_type = $_POST['Blood']; 
-    $religion = $_POST['Religion'] ; 
-    $year_level = $_POST['Year'];
+    $religion = $_POST['Religion']; 
+    $year_level = $_POST['Year'] ?? null;
     $id_number = $_POST['ID'];
     $email = $_POST['Email'];
 
@@ -123,13 +123,7 @@ if (isset($_POST['send'])) {
 
         <div class="flex flex-col">
             <label for="Year">Year Level</label>
-            <select name="Year" id="Year" required>
-                <option value="First Year" selected>First Year</option>
-                <option value="Second Year">Second Year</option>
-                <option value="Third Year">Third Year</option>
-                <option value="Fourth Year">Fourth Year</option>
-                <option value="Irregular">Irregular</option>
-            </select>
+            <input name="Year" id="Year" required>
         </div>
 
         <div class="flex flex-col">
