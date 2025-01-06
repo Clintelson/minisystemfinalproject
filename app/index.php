@@ -17,7 +17,7 @@ if (isset($_POST['send'])) {
 
     $stmt = $conn->prepare("INSERT INTO information (FirstName, MiddleName, LastName, Age, Sex, Birthdate, bloodType, Religion,yearLevel, idNumber, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
-    $stmt->bind_param("sssissssiss", $first, $middle, $last, $age, $sex, $birthdate, $blood_type, $religion, $year_level, $id_number, $email);
+    $stmt->bind_param("sssisssssss", $first, $middle, $last, $age, $sex, $birthdate, $blood_type, $religion, $year_level, $id_number, $email);
 
     if ($stmt->execute()) {
         echo "
@@ -34,6 +34,7 @@ if (isset($_POST['send'])) {
 
     $stmt->close();
     $conn->close();
+    
 } else {
     echo 
     "
@@ -41,7 +42,7 @@ if (isset($_POST['send'])) {
     Invalid request method.
     </script>
     ";
-}
+} 
 
 ?>
 <!DOCTYPE html>
@@ -123,7 +124,13 @@ if (isset($_POST['send'])) {
 
         <div class="flex flex-col">
             <label for="Year">Year Level</label>
-            <input name="Year" id="Year" required>
+            <Select name="Year" id="Year" required>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="Irregular">Irregular</option>
+            </select>
         </div>
 
         <div class="flex flex-col">
@@ -158,10 +165,10 @@ if (isset($_POST['send'])) {
         for (var i = 0; i < fields.length; i++) {
             if (fields[i].value.trim() === "") {
                 alert("Please fill all required fields.");
-                return false; // Prevent form submission
+                return false;
             }
         }
-        return true; // Allow form submission
+        return true;
     }
     </script>
 

@@ -21,6 +21,27 @@ if (!empty($search)) {
 
 $result = $conn->query($query);
 
+if(isset($_POST['Delete'])) {
+
+    $id = $_POST['del'];
+
+    $del = mysqli_query($conn,"DELETE FROM information WHERE ID ='$id'");
+
+    if($del) {
+        echo "<script>
+        alert ('Success');
+        document.location.href='viewdata.php';
+        </script>"; 
+
+    } else {
+       echo"<script>
+        alert ('failed');
+        document.location.href ='viewdata.php';
+        </script>";         
+
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,6 +106,7 @@ $result = $conn->query($query);
             <th>Year Level</th>
             <th>ID Number</th>
             <th>Email</th>
+            <th>Action</th>
         </tr>
         <?php
             if ($result->num_rows > 0) {
@@ -104,11 +126,18 @@ $result = $conn->query($query);
             <td><?php echo $items["yearLevel"]; ?></td>
             <td><?php echo $items["idNumber"]; ?></td>
             <td><?php echo $items["email"]; ?></td>
+            <td>
+                <form action=" " method="POST"
+                    class="bg-orange-400 w-13 h-10 rounded-lg px-3 hover:bg-transparent hover:border hover:border-black transform duration-300 flex items-center">
+                    <input type="hidden" name="del" value="<?php echo $items["ID"]; ?>">
+                    <button type="submit" name="Delete"> Delete </button>
+                </form>
+            </td>
         </tr>
         <?php
                   }
               } else {
-                  echo "<tr><td colspan='12'>No data found</td></tr>";
+                  echo "<tr><td colspan='13'>No data found</td></tr>";
               }
 
               $conn->close();
