@@ -578,6 +578,18 @@ video {
   inset: 0px;
 }
 
+.-left-0 {
+  left: -0px;
+}
+
+.-right-0 {
+  right: -0px;
+}
+
+.-right-10 {
+  right: -2.5rem;
+}
+
 .-top-0 {
   top: -0px;
 }
@@ -618,6 +630,14 @@ video {
   right: 2.5rem;
 }
 
+.right-7 {
+  right: 1.75rem;
+}
+
+.right-8 {
+  right: 2rem;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -626,40 +646,52 @@ video {
   top: 2.5rem;
 }
 
-.right-8 {
-  right: 2rem;
-}
-
-.right-7 {
-  right: 1.75rem;
-}
-
-.top-5 {
-  top: 1.25rem;
+.top-2 {
+  top: 0.5rem;
 }
 
 .top-4 {
   top: 1rem;
 }
 
-.top-2 {
-  top: 0.5rem;
+.top-5 {
+  top: 1.25rem;
 }
 
-.-right-0 {
-  right: -0px;
+.right-1\/2 {
+  right: 50%;
 }
 
-.-left-0 {
-  left: -0px;
+.right-1 {
+  right: 0.25rem;
 }
 
-.-right-10 {
-  right: -2.5rem;
+.top-1\/2 {
+  top: 50%;
+}
+
+.top-1 {
+  top: 0.25rem;
+}
+
+.bottom-1\/2 {
+  bottom: 50%;
+}
+
+.bottom-1 {
+  bottom: 0.25rem;
 }
 
 .float-right {
   float: right;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .ml-1 {
@@ -668,6 +700,10 @@ video {
 
 .ml-2 {
   margin-left: 0.5rem;
+}
+
+.mr-10 {
+  margin-right: 2.5rem;
 }
 
 .mt-10 {
@@ -688,18 +724,6 @@ video {
 
 .mt-7 {
   margin-top: 1.75rem;
-}
-
-.mb-10 {
-  margin-bottom: 2.5rem;
-}
-
-.mr-10 {
-  margin-right: 2.5rem;
-}
-
-.mb-4 {
-  margin-bottom: 1rem;
 }
 
 .block {
@@ -750,6 +774,14 @@ video {
   height: 1.25rem;
 }
 
+.h-6 {
+  height: 1.5rem;
+}
+
+.h-7 {
+  height: 1.75rem;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -761,14 +793,6 @@ video {
 .h-fit {
   height: -moz-fit-content;
   height: fit-content;
-}
-
-.h-6 {
-  height: 1.5rem;
-}
-
-.h-7 {
-  height: 1.75rem;
 }
 
 .w-1 {
@@ -815,6 +839,10 @@ video {
   width: 1.25rem;
 }
 
+.w-6 {
+  width: 1.5rem;
+}
+
 .w-7 {
   width: 1.75rem;
 }
@@ -840,10 +868,6 @@ video {
   width: 100vw;
 }
 
-.w-6 {
-  width: 1.5rem;
-}
-
 .max-w-96 {
   max-width: 24rem;
 }
@@ -854,6 +878,26 @@ video {
 
 .border-collapse {
   border-collapse: collapse;
+}
+
+.translate-x-1\/2 {
+  --tw-translate-x: 50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.translate-x-1 {
+  --tw-translate-x: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.translate-y-1\/2 {
+  --tw-translate-y: 50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.translate-y-1 {
+  --tw-translate-y: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .transform {
@@ -956,6 +1000,10 @@ video {
   border-radius: 1.5rem;
 }
 
+.rounded-full {
+  border-radius: 9999px;
+}
+
 .rounded-lg {
   border-radius: 0.5rem;
 }
@@ -966,10 +1014,6 @@ video {
 
 .rounded-xl {
   border-radius: 0.75rem;
-}
-
-.rounded-full {
-  border-radius: 9999px;
 }
 
 .border {
@@ -1032,6 +1076,11 @@ video {
   background-color: rgb(156 163 175 / var(--tw-bg-opacity, 1));
 }
 
+.bg-green-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(187 247 208 / var(--tw-bg-opacity, 1));
+}
+
 .bg-green-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(134 239 172 / var(--tw-bg-opacity, 1));
@@ -1059,11 +1108,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.bg-green-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(187 247 208 / var(--tw-bg-opacity, 1));
 }
 
 .bg-opacity-40 {
@@ -1178,6 +1222,16 @@ video {
   font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
 .text-\[clamp\(2rem\2c 5vw\2c 3rem\)\] {
   font-size: clamp(2rem,5vw,3rem);
 }
@@ -1187,19 +1241,9 @@ video {
   line-height: 1.75rem;
 }
 
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-}
-
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
 }
 
 .font-bold {

@@ -124,7 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div id="modal" class="w-full h-dvh overflow-auto hidden absolute inset-0 bg-black bg-opacity-40"
         style="z-index: 1;">
 
-        <div class="w-full max-w-96 border-2 p-10 rounded-xl bg-[#00aeae] relative">
+        <div
+            class="w-full max-w-96 border-2 p-10 rounded-xl bg-[#00aeae] fixed right-1/2 bottom-1/2 transform translate-x-1/2 translate-y-1/2">
             <button class="text-black absolute text-4xl font-bold right-7 top-2 hover:scale-110"
                 onclick="closeModal()">&times;</button>
 
