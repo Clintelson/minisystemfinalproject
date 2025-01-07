@@ -1,48 +1,81 @@
 <?php
-include('database/database.php');
 
-if (isset($_POST['send'])) {
-    
-    $first = $_POST['first'];
-    $middle = $_POST['Middle']; 
-    $last = $_POST['Last'];
-    $age = $_POST['Age'];
-    $sex = $_POST['Sex'] ?? null;
-    $birthdate = $_POST['Birth'];
-    $blood_type = $_POST['Blood']; 
-    $religion = $_POST['Religion']; 
-    $year_level = $_POST['Year'] ?? null;
-    $id_number = $_POST['ID'];
-    $email = $_POST['Email'];
+session_start();
 
-    $stmt = $conn->prepare("INSERT INTO information (FirstName, MiddleName, LastName, Age, Sex, Birthdate, bloodType, Religion,yearLevel, idNumber, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    
-    $stmt->bind_param("sssisssssss", $first, $middle, $last, $age, $sex, $birthdate, $blood_type, $religion, $year_level, $id_number, $email);
-
-    if ($stmt->execute()) {
-        echo "
-        <script>
-           alert('Data submitted successfully!');
-        </script>
-        ";
-
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit; 
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-
-    $stmt->close();
-    $conn->close();
-    
-} else {
-    echo 
-    "
-    <script>
-    Invalid request method.
-    </script>
-    ";
+if (!isset($_SESSION['ID'])) {
+    header('location: auth/signin.php');
 } 
+
+include('../database/database.php');
+
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$query = "SELECT * FROM information";
+
+if (!empty($search)) {
+  $query .= " WHERE firstName LIKE '%$search%' 
+                OR middleName LIKE '%$search%' 
+                OR lastName LIKE '%$search%' 
+                OR age LIKE '%$search%' 
+                OR sex LIKE '%$search%' 
+                OR birthdate LIKE '%$search%' 
+                OR bloodType LIKE '%$search%' 
+                OR religion LIKE '%$search%' 
+                OR yearLevel LIKE '%$search%' 
+                OR idNumber LIKE '%$search%' 
+                OR email LIKE '%$search%'";
+}
+
+$result = $conn->query($query);
+
+if(isset($_POST['Delete'])) {
+
+    $id = $_POST['del'];
+
+    $del = mysqli_query($conn,"DELETE FROM information WHERE ID ='$id'");
+
+    if($del) {
+        echo "<script>
+        alert ('Success');
+        document.location.href='index.php';
+        </script>"; 
+
+    } else {
+       echo"<script>
+        alert ('failed');
+        document.location.href ='index.php';
+        </script>";         
+
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    $username = $_POST['user'];
+    $password = $_POST['pass'];
+    $confirmPassword = $_POST['confpass'];
+
+    if (empty($username) || empty($password)) {
+        
+        $error = "All fields are required.";
+    } elseif ($password !== $confirmPassword) {
+        
+        $error = "Passwords do not match.";
+    } else {
+        $sql = "INSERT INTO user (Username, Password) 
+                VALUES (?, ?)";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $username, $password);
+
+        if ($stmt->execute()) {
+            header('location: index.php');
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -52,126 +85,225 @@ if (isset($_POST['send'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/output.css">
-    <title>registration</title>
+    <title>viewdata</title>
+
     <style>
-    input,
-    select {
+    table {
+        border-collapse: collapse;
         width: 100%;
-        height: 40px;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    td,
+    th {
+        border: 1px solid rgb(185, 185, 185);
+        border-left: none;
+        border-right: none;
+        padding: 15px;
+    }
+
+    .input {
         outline: none;
-        border: solid 1px;
-        border-radius: 12px;
-        padding: 7px 16px 7px 16px;
+        padding: 7px 10px 7px 10px;
+        border: solid 2px gray;
+        border-radius: 17px;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 14px;
+        text-align: center;
     }
     </style>
 </head>
 
-<body
-    class="relative w-screen h-dvh flex flex-col gap-10 justify-center items-center bg-gray-400 font-mono pt-10 md:pt-0">
+<body class="w-screen h-dvh bg-gray-400 p-10 font-mono flex flex-col gap-5 overflow-x-hidden relative">
 
-    <h1 class="text-[clamp(2rem,5vw,3rem)]">Fill up the form</h1>
+    <!-- modal -->
+    <div id="modal" class="w-full h-dvh overflow-auto hidden absolute inset-0 bg-black bg-opacity-40"
+        style="z-index: 1;">
 
-    <a href="viewdata.php"
-        class="absolute top-10 right-10 h-10 w-fit bg-orange-400 px-2 rounded-lg hover:bg-transparent hover:border hover:border-black transform duration-300 flex items-center">
-        View Data
-    </a>
+        <div class="w-full max-w-96 border-2 p-10 rounded-xl bg-[#00aeae] relative">
+            <button class="text-black absolute text-4xl font-bold right-7 top-2 hover:scale-110"
+                onclick="closeModal()">&times;</button>
 
-    <form method="POST" onsubmit="return validateForm()"
-        class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full lg:w-2/3 px-10 lg:px-0 overflow-x-hidden pb-10">
+            <form method="POST" class="flex flex-col gap-5 mt-2">
 
-        <div class="flex flex-col">
-            <label for="first">First Name</label>
-            <input id="first" name="first" type="text" required>
+                <div class="flex flex-col">
+                    <label for="user">Username</label>
+                    <input id="user" name="user" type="text" class="input">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="pass">Password</label>
+                    <input id="pass" name="pass" type="password" class="pass input">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="confpass">Confirm Password</label>
+                    <input id="confpass" name="confpass" type="password" class="pass input">
+
+                    <div class="mt-2 ml-1 w-full flex items-center gap-1 text-right">
+                        <input id="show" type="checkbox" onclick="myFunction()"
+                            class="w-4 h-4 accent-blue-500 rounded-md border-gray-300 focus:ring focus:ring-blue-300">
+                        <label for="show">Show Password</label>
+                    </div>
+                </div>
+
+                <?php if (!empty($error)) : ?>
+                <div class="error-message w-full flex items-center justify-center">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+                <?php endif; ?>
+
+                <button type="submit" name="crt"
+                    class="w-full h-12 bg-[#CC5500] hover:border rounded-3xl py-3 mt-5 hover:bg-transparent">
+                    Create
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="w-full h-20 flex flex-row gap-2 items-center justify-between relative">
+
+        <div class="flex flex-row gap-2 items-center">
+            <button onclick="window.location.href='auth/logout.php'" class="h-10 w-10">
+                <img src="../public/img/logout.svg" alt="logout">
+            </button>
+            <form method="GET" action=""
+                class="bg-white flex flex-row w-fit px-3 py-1 border border-1 border-black rounded-3xl">
+                <input type="text" name="search" class="bg-transparent outline-none"
+                    value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <button class="w-10 px-2 py-1 border-l-2 flex justify-center items-center">
+                    <img src="../public/img/search.svg" alt="search">
+                </button>
+            </form>
         </div>
 
-        <div class="flex flex-col">
-            <label for="Middle">Middle Name</label>
-            <input id="Middle" name="Middle" type="text" required>
-        </div>
+        <h1 class="text-[clamp(2rem,5vw,3rem)] absolute left-1/2 -top-5">DATA</h1>
 
-        <div class="flex flex-col">
-            <label for="Last">Last Name</label>
-            <input id="Last" name="Last" type="text" required>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="Age">Age</label>
-            <input id="Age" name="Age" type="number" required>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="Sex">Sex</label>
-            <select name="Sex" id="Sex" required>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="Birth">Birthdate</label>
-            <input id="Birth" name="Birth" type="date" required>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="Blood">Blood Type</label>
-            <input id="Blood" name="Blood" type="text" required>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="Religion">Religion</label>
-            <input id="Religion" name="Religion" type="text" required>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="Year">Year Level</label>
-            <Select name="Year" id="Year" required>
-                <option value="1st Year">1st Year</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year">3rd Year</option>
-                <option value="4th Year">4th Year</option>
-                <option value="Irregular">Irregular</option>
-            </select>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="ID">ID Number</label>
-            <input id="ID" name="ID" type="number" required>
-        </div>
-
-        <div class="flex flex-col">
-            <label for="Email">Email</label>
-            <input id="Email" name="Email" type="email" required>
-        </div>
-
-        <div class="flex flex-row gap-5 mt-6">
-
-            <button type="reset"
-                class="bg-orange-400 h-10 w-full rounded-lg overflow-hidden whitespace-nowrap hover:bg-transparent hover:border hover:border-black transform duration-300">
-                Clear all
+        <div class="flex flex-row gap-2 items-center">
+            <button onclick="window.location.href='form.php'"
+                class=" h-10 w-24 bg-orange-400 rounded-lg hover:bg-transparent hover:border hover:border-black transform duration-300 flex items-center justify-center">
+                ADD DATA
             </button>
 
-            <button name="send" type="submit"
-                class="bg-orange-400 h-10 w-full rounded-lg overflow-hidden whitespace-nowrap hover:bg-transparent hover:border hover:border-black transform duration-300">
-                Submit
+            <button id="openModal" onclick="window.location.href='index.php?createAccount'"
+                class=" h-10 w-36 bg-orange-400 rounded-lg hover:bg-transparent hover:border hover:border-black transform duration-300 flex items-center justify-center">
+                CREATE ACCOUNT
             </button>
-
         </div>
 
-    </form>
+    </div>
+
+    <table>
+        <tr>
+            <th>Count</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Birthdate</th>
+            <th>Blood Type</th>
+            <th>Religion</th>
+            <th>Year Level</th>
+            <th>ID Number</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        <?php
+            if ($result->num_rows > 0) {
+                $count = 1; 
+                while ($items = $result->fetch_assoc()) {
+            ?>
+        <tr>
+            <td><?php echo $count++; ?></td>
+            <td><?php echo $items["FirstName"]; ?></td>
+            <td><?php echo $items["MiddleName"]; ?></td>
+            <td><?php echo $items["LastName"]; ?></td>
+            <td><?php echo $items["Age"]; ?></td>
+            <td><?php echo $items["Sex"]; ?></td>
+            <td><?php echo $items["Birthdate"]; ?></td>
+            <td><?php echo $items["bloodType"]; ?></td>
+            <td><?php echo $items["Religion"]; ?></td>
+            <td><?php echo $items["yearLevel"]; ?></td>
+            <td><?php echo $items["idNumber"]; ?></td>
+            <td><?php echo $items["email"]; ?></td>
+            <td>
+                <form action=" " method="POST"
+                    class="bg-orange-400 w-13 h-10 rounded-lg px-3 hover:bg-transparent hover:border hover:border-black transform duration-300 flex items-center">
+                    <input type="hidden" name="del" value="<?php echo $items["ID"]; ?>">
+                    <button type="submit" name="Delete"> Delete </button>
+                </form>
+            </td>
+        </tr>
+        <?php
+                  }
+              } else {
+                  echo "<tr><td colspan='13'>No data found</td></tr>";
+              }
+
+              $conn->close();
+            ?>
+    </table>
 
     <script>
-    function validateForm() {
-        var fields = document.querySelectorAll('input[required], select[required]');
-        for (var i = 0; i < fields.length; i++) {
-            if (fields[i].value.trim() === "") {
-                alert("Please fill all required fields.");
-                return false;
-            }
+    var modal = document.getElementById("modal");
+    var btn = document.getElementById("openModal");
+
+    // Open modal and update the URL
+    btn.onclick = function() {
+        modal.style.display = "block";
+        history.pushState({
+            modalOpen: true
+        }, '', '?createAccountModal=true');
+    };
+
+    // Close modal and update the URL
+    function closeModal() {
+        modal.style.display = "none";
+        history.pushState({}, '', 'index.php');
+    }
+
+    // Close modal when clicking outside it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
         }
-        return true;
+    };
+
+    // Handle browser back/forward button
+    window.onpopstate = function(event) {
+        if (event.state && event.state.modalOpen) {
+            modal.style.display = "block";
+        } else {
+            modal.style.display = "none";
+        }
+    };
+
+    // Ensure modal stays open on page load if URL has the parameter
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('createAccountModal') === 'true') {
+            modal.style.display = "block";
+        }
+    };
+
+    function myFunction() {
+        const passwordFields = document.querySelectorAll(".pass");
+        passwordFields.forEach(field => {
+            if (field.type === "password") {
+                field.type = "text";
+            } else {
+                field.type = "password";
+            }
+        });
     }
     </script>
-
 </body>
 
 </html>
