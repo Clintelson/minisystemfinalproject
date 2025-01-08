@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </style>
 </head>
 
-<body class="w-screen h-dvh bg-gray-400 p-10 font-mono flex flex-col gap-5 relative">
+<body class="w-screen h-dvh bg-gray-400 p-10 font-mono flex flex-col gap-2 md:gap-5 relative">
 
     <!-- modal -->
     <div id="modal" class="w-full h-dvh overflow-auto hidden absolute inset-0 bg-black bg-opacity-40"
@@ -170,8 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="w-full h-20 flex flex-row gap-2 items-center justify-between relative">
 
-        <div class="flex flex-row gap-2 items-center">
-            <button onclick="window.location.href='auth/logout.php'" class="h-10 w-10">
+        <div class="flex flex-row gap-2 items-center relative">
+            <button onclick="window.location.href='auth/logout.php'" class="h-10 w-10 hidden md:block">
                 <img src="../public/img/logout.svg" alt="logout">
             </button>
             <form method="GET" action=""
@@ -200,6 +200,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </div>
 
+    <div class="block md:hidden">
+        <button onclick="window.location.href='auth/logout.php'" class="h-10 w-10">
+            <img src="../public/img/logout.svg" alt="logout">
+        </button>
+    </div>
     <table class="overflow-x-auto">
         <tr>
             <th>#</th>
@@ -235,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <td><?php echo $items["idNumber"]; ?></td>
             <td><?php echo $items["email"]; ?></td>
             <td>
-                <form action=" " method="POST" class="">
+                <form action=" " method="POST" class="flex gap-1">
                     <input type="hidden" name="del" value="<?php echo $items["ID"]; ?>">
                     <button type="submit" name="Delete" class="hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
