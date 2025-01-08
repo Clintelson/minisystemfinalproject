@@ -29,11 +29,10 @@ if (isset($_POST['send'])) {
         echo "
         <script>
            alert('Data submitted successfully!');
+           window.location.href='form.php';
         </script>
         ";
 
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit; 
     } else {
         echo "Error: " . $stmt->error;
     }
