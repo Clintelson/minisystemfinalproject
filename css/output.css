@@ -1390,10 +1390,6 @@ video {
     gap: 1.25rem;
   }
 
-  .md\:p-10 {
-    padding: 2.5rem;
-  }
-
   .md\:pt-0 {
     padding-top: 0px;
   }
